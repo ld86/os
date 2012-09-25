@@ -1,2 +1,6 @@
+SRC=src
+INC=inc
+BIN=bin
+
 all:
-	g++ main.cc -o main.out
+	g++ ${SRC}/main.cc -o ${BIN}/main.out
