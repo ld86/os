@@ -3,4 +3,4 @@ INC=inc
 BIN=bin
 
 all:
-	g++ ${SRC}/main.cc -o ${BIN}/main.out
+	g++ ${SRC}/*.cc -I./${INC}/ -o ${BIN}/main.out --std=c++11
