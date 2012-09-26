@@ -4,6 +4,7 @@
 #include "Triggers.h"
 #include "UKKOM.h"
 #include "DEKKOM.h"
+#include "IR.h"
 
 int Usage()
 {
@@ -26,6 +27,8 @@ int main(int argc,char** argv)
     auto instruction = ukkom.GetCurrentInstruction();
     triggers = cpu::DEKKOM::GetTriggers((unsigned char) (instruction >> 8) );
     auto address = (unsigned char) (instruction & 0xFF);
+
+
   }
 
   return 0;
