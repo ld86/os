@@ -9,7 +9,7 @@ namespace cpu
   class DEKKOM
   {
     public:
-      static cpu::Triggers GetTriggers(unsigned char KOP)
+      static cpu::Triggers GetTriggers(unsigned char KOP,RON& ron)
       {
         cpu::Triggers triggers;
 
@@ -60,6 +60,22 @@ namespace cpu
             p = 4;
             op = 0xf;
             pereh = 1;
+            break;
+          case 0xf0:
+            p = 4;
+            op = 0xf;
+            if (ron.GetPRZNK() == 1)
+              pereh = 1;
+            else 
+              pereh = 0;
+            break;
+          case 0xf1:
+            p = 4;
+            op = 0xf;
+            if (ron.GetPRZNK() == 0)
+              pereh = 1;
+            else 
+              pereh = 0;
             break;
           case 0xff:
             p = 4;

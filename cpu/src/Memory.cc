@@ -19,6 +19,10 @@ namespace cpu
     std::ifstream fin(filename.c_str());    
     unsigned char offset = 0;   
     unsigned char byte,symbol;
+
+    for (int i = 0; i <= 255; ++i)
+      memory[i] = 0;
+
     while (fin >> symbol)
     {
       byte = ( ctoi(symbol) ) << 4;

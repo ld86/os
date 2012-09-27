@@ -25,5 +25,6 @@ int main(int argc,char** argv)
       break;
     }
   }
+  state.PrintMemory();
   return 0;
 }

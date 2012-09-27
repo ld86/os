@@ -31,7 +31,9 @@ namespace cpu
       unsigned char GetRes();
       unsigned char GetPr();
 
+      void Replace(State& state);
     public:
+      void PrintMemory();
       void LoadMemoryFromFile(const std::string& filename);
       void NextState();
   };
