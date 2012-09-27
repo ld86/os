@@ -38,4 +38,8 @@ namespace cpu
     return memory[offset];
   }
   
+  void Memory::SetByte(unsigned char offset, unsigned char byte)
+  {
+    memory[offset] = byte;
+  }
 }

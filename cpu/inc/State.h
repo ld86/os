@@ -27,6 +27,10 @@ namespace cpu
       void IrAction(State& state);
       void RonAction(State& state); 
 
+      unsigned char GetAddr();
+      unsigned char GetRes();
+      unsigned char GetPr();
+
     public:
       void LoadMemoryFromFile(const std::string& filename);
       void NextState();
