@@ -3,11 +3,13 @@
 
 #include "Triggers.h"
 
-class RON
+namespace cpu
 {
-  const cpu::Triggers& triggers;
-  unsigned char sum,prznk;
-  public:
+  class RON
+  {
+    const cpu::Triggers& triggers;
+    unsigned char sum,prznk;
+    public:
     RON(const cpu::Triggers& tr) : triggers(tr),sum(0),prznk(0) {}
 
     unsigned char GetSUM() const
@@ -28,6 +30,6 @@ class RON
         this->prznk = prznk;
       }
     }
+  };
 }
-
 #endif

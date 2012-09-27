@@ -1,10 +1,6 @@
 #include <iostream>
 
-#include "Memory.h"
-#include "Triggers.h"
-#include "UKKOM.h"
-#include "DEKKOM.h"
-#include "IR.h"
+#include "State.h"
 
 int Usage()
 {
@@ -16,20 +12,18 @@ int main(int argc,char** argv)
   if (argc != 2)
     return Usage();
 
-
-  auto memory = cpu::Memory::InstanceFromFile(argv[1]);  
-  cpu::Triggers triggers;
-  cpu::UKKOM ukkom(memory);
-  triggers.PUSK = true;
-
-  while (triggers.PUSK)
+  cpu::State state;
+  state.LoadMemoryFromFile(argv[1]);
+  while (true)
   {
-    auto instruction = ukkom.GetCurrentInstruction();
-    triggers = cpu::DEKKOM::GetTriggers((unsigned char) (instruction >> 8) );
-    auto address = (unsigned char) (instruction & 0xFF);
-
-
+    try
+    {
+      state.NextState();
+    }
+    catch (cpu::StopException)
+    {
+      break;
+    }
   }
-
   return 0;
 }

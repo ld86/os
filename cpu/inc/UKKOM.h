@@ -1,7 +1,7 @@
 #ifndef _INC_UKKOM_
 #define _INC_UKKOM_
 
-#include "Memory.h"
+#include "Triggers.h"
 
 namespace cpu
 {
@@ -9,19 +9,21 @@ namespace cpu
   class UKKOM
   {
     unsigned char ukkom;
-    const cpu::Memory& memory;
+    const cpu::Triggers& triggers;
     public:
-    UKKOM(const cpu::Memory& mem) : memory(mem),ukkom(0) {};
+    UKKOM(const cpu::Triggers& tr) : triggers(tr),ukkom(0) {};
 
     void SetUKKOM(unsigned char ukkom)
     {
-      this->ukkom = ukkom;
+      if (triggers.PUSK)
+        this->ukkom = ukkom;
+    }
+    
+    unsigned char GetUKKOM()
+    {      
+      return ukkom;
     }
 
-    unsigned short GetCurrentInstruction()
-    {
-      return ( (memory.GetByte(ukkom) << 8) | memory.GetByte(ukkom + 1) );
-    }
   };
 }
 #endif
