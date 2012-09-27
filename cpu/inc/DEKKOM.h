@@ -1,6 +1,9 @@
 #ifndef _INC_DEKKOM_
 #define _INC_DEKKOM_
 
+#include <fstream>
+#include <iostream>
+
 #include "Triggers.h"
 #include "Memory.h"
 
@@ -9,6 +12,40 @@ namespace cpu
   class DEKKOM
   {
     public:
+      static void Mask(Triggers& triggers)
+      {
+        std::ifstream fin("config");
+        std::string configLine;
+        while (fin >> configLine)
+        {
+          if (configLine[0] == '#')
+            continue;
+          
+          std::string key = configLine.substr(0,configLine.find("="));
+          std::string value = configLine.substr(configLine.find("=") + 1);
+          unsigned char v = atoi(value.c_str());
+
+          if (key == "PUSK")
+            triggers.PEREH = v;
+          else if (key == "ZAPP")
+            triggers.ZAPP = v;
+          else if (key == "ZAM1")
+            triggers.ZAM1 = v;
+          else if (key == "ZAM2")
+            triggers.ZAM2 = v;
+          else if (key == "VZAP1")
+            triggers.VZAP1 = v;
+          else if (key == "VIB")
+            triggers.VIB = v;
+          else if (key == "CHIST")
+            triggers.CHIST = v;
+          else if (key == "PEREH")
+            triggers.PEREH = v;
+          else if (key == "OP")
+            triggers.OP = v;
+        }
+      }
+
       static cpu::Triggers GetTriggers(unsigned char KOP,RON& ron)
       {
         cpu::Triggers triggers;
@@ -95,6 +132,9 @@ namespace cpu
         triggers.PUSK = (KOP != 0xFF);
         triggers.OP = op;
         triggers.PEREH = pereh;
+
+        Mask(triggers);
+
         return triggers;
       }
   };
