@@ -7,7 +7,7 @@
 #include "UKKOM.h"
 #include "IR.h"
 #include "RON.h"
-#include "Triggers.h"
+#include "Triggers.h" 
 #include "DEKKOM.h"
 
 namespace cpu
@@ -22,13 +22,12 @@ namespace cpu
     RON ron;
     Triggers triggers;   
 
-      void UkkomAction();
-      void MemoryAction();
-      void IrAction();
-      void RonAction(); 
+      void UkkomAction(State& state);
+      void MemoryAction(State& state);
+      void IrAction(State& state);
+      void RonAction(State& state); 
 
     public:
-      State();
       void LoadMemoryFromFile(const std::string& filename);
       void NextState();
   };

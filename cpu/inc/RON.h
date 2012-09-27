@@ -7,10 +7,9 @@ namespace cpu
 {
   class RON
   {
-    const cpu::Triggers& triggers;
     unsigned char sum,prznk;
     public:
-    RON(const cpu::Triggers& tr) : triggers(tr),sum(0),prznk(0) {}
+    RON() : sum(0),prznk(0) {}
 
     unsigned char GetSUM() const
     {
@@ -24,11 +23,8 @@ namespace cpu
 
     void SetSUMandPRZNK(unsigned char sum,unsigned prznk)
     {
-      if (triggers.ZAM1)
-      {
-        this->sum = sum;
-        this->prznk = prznk;
-      }
+      this->sum = sum;
+      this->prznk = prznk;
     }
   };
 }

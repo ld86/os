@@ -28,9 +28,7 @@ namespace cpu
   class Memory
   {
     unsigned char memory[256];
-    const Triggers& triggers;
     public:
-    Memory(const Triggers& tr) : triggers(tr) {}
     void LoadFile(const std::string& filename);
     unsigned char GetByte(unsigned char offset) const;
     void SetByte(unsigned char offset,unsigned char byte);

@@ -7,10 +7,9 @@ namespace cpu
 {
   class IR
   {
-    const cpu::Triggers& triggers;
     unsigned char ir;
     public:
-      IR(const cpu::Triggers& tr) : triggers(tr),ir(0) {}
+      IR() : ir(0) {}
       
       unsigned char GetIR() const 
       {
@@ -19,8 +18,7 @@ namespace cpu
 
       void SetIR(unsigned char ir)
       {
-        if (triggers.ZAM2)
-          this->ir = ir;       
+        this->ir = ir;       
       }
   };
 }

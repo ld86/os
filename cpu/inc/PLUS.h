@@ -8,8 +8,6 @@ namespace cpu
   class PLUS
   {
     
-    public:
-      PLUS(const ) 
   };
 }
 #endif

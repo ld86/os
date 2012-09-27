@@ -9,14 +9,12 @@ namespace cpu
   class UKKOM
   {
     unsigned char ukkom;
-    const cpu::Triggers& triggers;
     public:
-    UKKOM(const cpu::Triggers& tr) : triggers(tr),ukkom(0) {};
+    UKKOM() : ukkom(0) {};
 
     void SetUKKOM(unsigned char ukkom)
     {
-      if (triggers.PUSK)
-        this->ukkom = ukkom;
+      this->ukkom = ukkom;
     }
     
     unsigned char GetUKKOM()
