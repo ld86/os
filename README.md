@@ -6,9 +6,7 @@ Some tasks for USU OS course
 Sort
 ===
 
-{{{ 
-  Язык: python3
-}}}
+Язык: python3
 
 CPU
 ===
