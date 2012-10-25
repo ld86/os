@@ -14,7 +14,7 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable)
     status = uefi_call_wrapper(
             SystemTable->BootServices->GetMemoryMap,
             5, 
-            &size, &descriptors, &a, &ActualSize, &c);
+            &size, descriptors, &a, &ActualSize, &c);
 
     if ( status == EFI_SUCCESS )
     {
