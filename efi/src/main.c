@@ -5,27 +5,80 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable)
 {
     InitializeLib(ImageHandle, SystemTable);
 
-    EFI_MEMORY_DESCRIPTOR descriptors[1024];
+    char descriptors[1024 * sizeof(EFI_MEMORY_DESCRIPTOR)];
     UINTN size = 1024 * sizeof(EFI_MEMORY_DESCRIPTOR);
-    UINTN a,b;
+    UINTN a,ActualSize;
     UINT32 c;
     UINTN status;
 
     status = uefi_call_wrapper(
             SystemTable->BootServices->GetMemoryMap,
             5, 
-            &size, descriptors, &a, &b, &c);
+            &size, &descriptors, &a, &ActualSize, &c);
 
     if ( status == EFI_SUCCESS )
     {
-        SIMPLE_TEXT_OUTPUT_INTERFACE *conout;
-        conout = SystemTable->ConOut;
-        uefi_call_wrapper(conout->OutputString, 2, conout, L"GetMemoryMap() Success!\n\r");
+        Print(L"GetMemoryMap() Success!\n");
         int i;
-        for (i = 0; i < size/sizeof(EFI_MEMORY_DESCRIPTOR); ++i)
+        Print(L"%d %d\n",size,ActualSize);
+        for (i = 0; i < size/ActualSize; ++i)
         {
-            uefi_call_wrapper(conout->OutputString, 2, conout, L"1\n\r");
-            Print(L"%X\n",descriptors[i].PhysicalStart);
+            EFI_MEMORY_DESCRIPTOR descriptor = *((EFI_MEMORY_DESCRIPTOR*) descriptors + i * ActualSize);
+
+            switch (descriptor.Type)
+            {
+                case EfiReservedMemoryType:
+                    Print(L"EfiReservedMemoryType\n");
+                    break;
+                case EfiLoaderCode:
+                    Print(L"EfiLoaderCode\n");
+                    break;
+                case EfiLoaderData:
+                    Print(L"EfiLoaderData\n");
+                    break;
+                case EfiBootServicesCode:
+                    Print(L"EfiBootServicesCode\n");
+                    break;
+                case EfiBootServicesData:
+                    Print(L"EfiBootServicesData\n");
+                    break;
+                case EfiRuntimeServicesCode:
+                    Print(L"EfiRuntimeServicesCode\n");
+                    break;
+                case EfiRuntimeServicesData:
+                    Print(L"EfiRuntimeServicesData\n");
+                    break;
+                case EfiConventionalMemory:
+                    Print(L"EfiConventionalMemory\n");
+                    break;
+                case EfiUnusableMemory:
+                    Print(L"EfiUnusableMemory\n");
+                    break;
+                case EfiACPIReclaimMemory:
+                    Print(L"EfiACPIReclaimMemory\n");
+                    break;
+                case EfiACPIMemoryNVS:
+                    Print(L"EfiACPIMemoryNVS\n");
+                    break;
+                case EfiMemoryMappedIO:
+                    Print(L"EfiMemoryMappedIO\n");
+                    break;
+                case EfiMemoryMappedIOPortSpace:
+                    Print(L"EfiMemoryMappedIOPortSpace\n");
+                    break;
+                case EfiPalCode:
+                    Print(L"EfiPalCode\n");
+                    break;
+                case EfiMaxMemoryType:
+                    Print(L"EfiMaxMemoryType\n");
+                    break;
+                default:
+                    Print(L"UnknownMemoryType\n");
+                    break;
+            }
+            Print(L"    PhysicalStart:  %X\n", descriptor.PhysicalStart);
+            Print(L"    VirtualStart:   %X\n", descriptor.VirtualStart);
+            Print(L"    NumberOfPages:  %X\n", descriptor.NumberOfPages);
         }
     }        
     return EFI_SUCCESS;
