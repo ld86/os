@@ -11,7 +11,10 @@ def main():
     if not os.path.exists(filename):
       print("Warning: %s not found, skip" % filename)
       continue
-    items += re.findall(r'-?[0-9]+',io.open(filename).read())
+    try:
+        items += re.findall(r'-?[0-9]+',io.open(filename).read())
+    except Exception as e:
+        print("Fatal exception %s, continue" % e)
   items.sort(key=int)
   [print(i) for i in items]
 
