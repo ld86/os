@@ -118,13 +118,13 @@ namespace cpu
     printf("\n");
   }
 
-  void State::NextState()
+  void State::NextState(std::map<std::string, std::string>& mask)
   {
     State nextState;
     auto currentUkkom = ukkom.GetUKKOM();
     auto kop = memory.GetByte(2 * currentUkkom);
     auto addr = memory.GetByte(2 * currentUkkom + 1);
-    triggers = DEKKOM::GetTriggers(kop,ron);
+    triggers = DEKKOM::GetTriggers(kop,ron,mask);
     printf("%x %x\n",kop,addr);
 
     if (kop == 0xff)

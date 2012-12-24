@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <map>
 
 #include "Triggers.h"
 #include "Memory.h"
@@ -12,17 +13,13 @@ namespace cpu
   class DEKKOM
   {
     public:
-      static void Mask(Triggers& triggers)
+      static void Mask(Triggers& triggers,std::map<std::string, std::string>& mask)
       {
-        std::ifstream fin("config");
-        std::string configLine;
-        while (fin >> configLine)
+        std::map<std::string, std::string>::iterator it;
+        for (it = mask.begin(); it != mask.end(); it++)
         {
-          if (configLine[0] == '#')
-            continue;
-          
-          std::string key = configLine.substr(0,configLine.find("="));
-          std::string value = configLine.substr(configLine.find("=") + 1);
+          std::string key = (*it).first;
+          std::string value = (*it).second;
           unsigned char v = atoi(value.c_str());
 
           if (key == "PUSK")
@@ -46,7 +43,7 @@ namespace cpu
         }
       }
 
-      static cpu::Triggers GetTriggers(unsigned char KOP,RON& ron)
+      static cpu::Triggers GetTriggers(unsigned char KOP,RON& ron,std::map<std::string, std::string>& mask)
       {
         cpu::Triggers triggers;
 
@@ -122,7 +119,7 @@ namespace cpu
           default:
             throw cpu::MemoryException("Invalid KOP");
         }
-        
+
         triggers.VZAP1 = (p == 3);
         triggers.CHIST = !(p == 2 || p == 3);
         triggers.ZAM2 = (p != 3);
@@ -133,7 +130,7 @@ namespace cpu
         triggers.OP = op;
         triggers.PEREH = pereh;
 
-        Mask(triggers);
+        Mask(triggers, mask);
 
         return triggers;
       }
