@@ -2,26 +2,30 @@
 #include <pthread.h>
 #include <stdlib.h>
 
-int counter = 0;
-int mutex = 0;
-int dummy;
+volatile int counter = 0;
+volatile int mutex = 0;
+volatile int dummy;
 
 void* Incremental(void* argument)
 {
-    __asm("pusha");
     for (int i = 0; i < 100000; ++i)
     {
-        __asm("xorl %ecx, %ecx");
-        __asm("incl %ecx");
-        __asm("spin_lock_retry_inc:");
-        __asm("mov %0, %%ebx" : : "r" (&mutex));
-        __asm("xorl %eax,%eax");
-        __asm("lock; cmpxchgl %ecx, (%ebx)");
-        __asm("jnz spin_lock_retry_inc");
+        __asm volatile ("pusha");
+        __asm volatile ("xorl %ecx, %ecx");
+        __asm volatile ("incl %ecx");
+        __asm volatile ("spin_lock_retry_inc:");
+        __asm volatile ("mov %0, %%ebx" : : "r" (&mutex));
+        __asm volatile ("xorl %eax,%eax");
+        __asm volatile ("lock; cmpxchgl %ecx, (%ebx)");
+        __asm volatile ("jnz spin_lock_retry_inc");
+        __asm volatile ("popa");
+
         counter += 1;
-        __asm("movl $0, (%0)" : : "r" (&mutex));
+        __asm volatile ("pusha");
+        __asm volatile ("movl $0, (%0)" : : "r" (&mutex));
+        __asm volatile ("popa");
+
     }
-    __asm("popa");
 }
 
 void* Decremental(void* argument)
@@ -29,15 +33,19 @@ void* Decremental(void* argument)
     __asm("pusha");
     for (int i = 0; i < 100000; ++i)
     {
-        __asm("xorl %ecx, %ecx");
-        __asm("incl %ecx");
-        __asm("spin_lock_retry_dec:");
-        __asm("mov %0, %%ebx" : : "r" (&mutex));
-        __asm("xorl %eax,%eax");
-        __asm("lock; cmpxchgl %ecx, (%ebx)");
-        __asm("jnz spin_lock_retry_dec");
+        __asm volatile ("pusha");
+        __asm volatile ("xorl %ecx, %ecx");
+        __asm volatile ("incl %ecx");
+        __asm volatile ("spin_lock_retry_dec:");
+        __asm volatile ("mov %0, %%ebx" : : "r" (&mutex));
+        __asm volatile ("xorl %eax,%eax");
+        __asm volatile ("lock; cmpxchgl %ecx, (%ebx)");
+        __asm volatile ("jnz spin_lock_retry_dec");
+        __asm volatile ("popa");
         counter -= 1;
-        __asm("movl $0, (%0)" : : "r" (&mutex));
+        __asm volatile ("pusha");
+        __asm volatile ("movl $0, (%0)" : : "r" (&mutex));
+        __asm volatile ("popa");
     }
     __asm("popa");
 }
