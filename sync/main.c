@@ -53,16 +53,33 @@ void* Decremental(void* argument)
 int main()
 {
     pthread_t threads[2];
-    
+    int status;
     for (int count = 0; count < 100; ++count)
     {
         counter = 0;
-        pthread_create(&threads[0], NULL, Incremental, NULL);
-        pthread_create(&threads[1], NULL, Decremental, NULL);
+
+        status = pthread_create(&threads[0], NULL, Incremental, NULL);
+        if (status != 0)
+        {
+            printf("Create Incremental thread failed: %d\n", status);
+            abort();
+        }
+
+        status = pthread_create(&threads[1], NULL, Decremental, NULL);
+        if (status != 0)
+        {
+            printf("Create Decremental thread failed: %d\n", status);
+            abort();
+        }
 
         for (int i = 0; i < 2; ++i)
         {
-            pthread_join(threads[i], NULL);
+            status = pthread_join(threads[i], NULL);
+            if (status != 0)
+            {
+                printf("Failed join thread: %d\n", status);
+                abort();
+            }
         }
 
         if (counter != 0)
