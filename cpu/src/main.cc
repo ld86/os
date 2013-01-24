@@ -19,7 +19,7 @@ int main(int argc,char** argv)
 
   std::ifstream fin("config");
   std::string configLine;
-  std::map<std::string, std::string> mask;
+  std::map<std::string, bool> mask;
   while (fin >> configLine)
   {
       if (configLine[0] == '#')
@@ -27,7 +27,7 @@ int main(int argc,char** argv)
 
       std::string key = configLine.substr(0,configLine.find("="));
       std::string value = configLine.substr(configLine.find("=") + 1);
-      mask[key] = value;
+      mask[key] = atoi(value.c_str());
   }
 
   try

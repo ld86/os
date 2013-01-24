@@ -13,37 +13,36 @@ namespace cpu
   class DEKKOM
   {
     public:
-      static void Mask(Triggers& triggers,std::map<std::string, std::string>& mask)
+      static void Mask(Triggers& triggers,std::map<std::string, bool>& mask)
       {
-        std::map<std::string, std::string>::iterator it;
+        std::map<std::string, bool>::iterator it;
         for (it = mask.begin(); it != mask.end(); it++)
         {
           std::string key = (*it).first;
-          std::string value = (*it).second;
-          unsigned char v = atoi(value.c_str());
+          bool value = (*it).second;
 
           if (key == "PUSK")
-            triggers.PEREH = v;
+            triggers.PEREH = value;
           else if (key == "ZAPP")
-            triggers.ZAPP = v;
+            triggers.ZAPP = value;
           else if (key == "ZAM1")
-            triggers.ZAM1 = v;
+            triggers.ZAM1 = value;
           else if (key == "ZAM2")
-            triggers.ZAM2 = v;
+            triggers.ZAM2 = value;
           else if (key == "VZAP1")
-            triggers.VZAP1 = v;
+            triggers.VZAP1 = value;
           else if (key == "VIB")
-            triggers.VIB = v;
+            triggers.VIB = value;
           else if (key == "CHIST")
-            triggers.CHIST = v;
+            triggers.CHIST = value;
           else if (key == "PEREH")
-            triggers.PEREH = v;
+            triggers.PEREH = value;
           else if (key == "OP")
-            triggers.OP = v;
+            triggers.OP = value;
         }
       }
 
-      static cpu::Triggers GetTriggers(unsigned char KOP,RON& ron,std::map<std::string, std::string>& mask)
+      static cpu::Triggers GetTriggers(unsigned char KOP,RON& ron,std::map<std::string, bool>& mask)
       {
         cpu::Triggers triggers;
 

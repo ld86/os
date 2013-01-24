@@ -118,7 +118,7 @@ namespace cpu
     printf("\n");
   }
 
-  void State::NextState(std::map<std::string, std::string>& mask)
+  void State::NextState(std::map<std::string, bool>& mask)
   {
     State nextState;
     auto currentUkkom = ukkom.GetUKKOM();

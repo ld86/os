@@ -35,7 +35,7 @@ namespace cpu
     public:
       void PrintMemory();
       void LoadMemoryFromFile(const std::string& filename);
-      void NextState(std::map<std::string, std::string>& mask);
+      void NextState(std::map<std::string, bool>& mask);
   };
 }
 #endif
